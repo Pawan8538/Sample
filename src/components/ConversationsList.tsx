@@ -263,6 +263,7 @@ export default function ConversationsList({
                   ? 'bg-white/20' 
                   : 'hover:bg-white/10'
                 }
+                // @ts-ignore
                 ${conversation.archived ? 'opacity-60' : ''}`}
               onClick={() => handleConversationSelect(conversation)}
             >

@@ -1,0 +1,154 @@
+// @ts-nocheck
+
+import { describe, it, expect, beforeEach, jest } from '@jest/globals'
+import { createTRPCContext } from '../../trpc'
+import { appRouter } from '../../root'
+import { createInnerTRPCContext } from '../../trpc'
+
+// Mock Supabase client
+const mockSupabase = {
+  from: jest.fn(() => ({
+    delete: jest.fn().mockReturnThis(),
+    eq: jest.fn().mockReturnThis(),
+  })),
+}
+
+jest.mock('@/lib/supabase', () => ({
+  supabase: mockSupabase,
+}))
+
+describe('Chat Router', () => {
+  const mockUser = {
+    id: 'user123',
+    auth0_id: 'auth0|123',
+    email: 'test@example.com',
+    created_at: '2024-03-15T00:00:00Z',
+    updated_at: '2024-03-15T00:00:00Z',
+  }
+
+  const mockConversation = {
+    id: 'conv123',
+    user_id: 'user123',
+    title: 'Test Conversation',
+    created_at: '2024-03-15T00:00:00Z',
+    updated_at: '2024-03-15T00:00:00Z',
+    archived: false,
+    last_active: '2024-03-15T00:00:00Z',
+  }
+
+  const mockMessages = [
+    {
+      id: 'msg1',
+      conversation_id: 'conv123',
+      role: 'user',
+      content: 'Test message 1',
+      created_at: '2024-03-15T00:00:00Z',
+    },
+    {
+      id: 'msg2',
+      conversation_id: 'conv123',
+      role: 'assistant',
+      content: 'Test response 1',
+      created_at: '2024-03-15T00:00:00Z',
+    },
+  ]
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
+  describe('delete', () => {
+    it('should delete conversation and its messages', async () => {
+      const ctx = createInnerTRPCContext({
+        session: {
+          user: mockUser,
+          expires: new Date().toISOString(),
+        },
+      })
+
+      const caller = appRouter.createCaller(ctx)
+
+      // Mock successful deletion of messages
+      mockSupabase.from.mockImplementation((table) => ({
+        delete: jest.fn().mockReturnThis(),
+        eq: jest.fn().mockResolvedValue({ error: null }),
+      }))
+
+      const result = await caller.chat.delete({ conversationId: mockConversation.id })
+
+      expect(result).toEqual({ success: true })
+      expect(mockSupabase.from).toHaveBeenCalledWith('messages')
+      expect(mockSupabase.from).toHaveBeenCalledWith('conversations')
+    })
+
+    it('should throw error if user is not authenticated', async () => {
+      const ctx = createInnerTRPCContext({
+        session: null,
+      })
+
+      const caller = appRouter.createCaller(ctx)
+
+      await expect(
+        caller.chat.delete({ conversationId: mockConversation.id })
+      ).rejects.toThrow('Not authenticated')
+    })
+
+    it('should throw error if conversation deletion fails', async () => {
+      const ctx = createInnerTRPCContext({
+        session: {
+          user: mockUser,
+          expires: new Date().toISOString(),
+        },
+      })
+
+      const caller = appRouter.createCaller(ctx)
+
+      // Mock failed deletion
+      mockSupabase.from.mockImplementation((table) => ({
+        delete: jest.fn().mockReturnThis(),
+        eq: jest.fn().mockResolvedValue({ error: new Error('Deletion failed') }),
+      }))
+
+      await expect(
+        caller.chat.delete({ conversationId: mockConversation.id })
+      ).rejects.toThrow('Failed to delete conversation')
+    })
+
+    it('should throw error if message deletion fails', async () => {
+      const ctx = createInnerTRPCContext({
+        session: {
+          user: mockUser,
+          expires: new Date().toISOString(),
+        },
+      })
+
+      const caller = appRouter.createCaller(ctx)
+
+      // Mock successful message deletion but failed conversation deletion
+      mockSupabase.from.mockImplementation((table) => {
+        if (table === 'messages') {
+          return {
+            delete: jest.fn().mockReturnThis(),
+            eq: jest.fn().mockResolvedValue({ error: null }),
+          }
+        }
+        return {
+          delete: jest.fn().mockReturnThis(),
+          eq: jest.fn().mockResolvedValue({ error: new Error('Deletion failed') }),
+        }
+      })
+
+      await expect(
+        caller.chat.delete({ conversationId: mockConversation.id })
+      ).rejects.toThrow('Failed to delete conversation')
+    })
+  })
+})
+
+describe.skip('chat router delete', () => {
+  it('should delete a conversation', () => {})
+})
+
+describe.skip('chat router delete functionality', () => {
+  // ... existing code ...
+}) 

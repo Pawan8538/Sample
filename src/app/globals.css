@@ -1,8 +1,17 @@
-@import "tailwindcss";
+@import "bootstrap/dist/css/bootstrap.min.css";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #000000;
+  --foreground: #ffffff;
+  --chat-bg: #111111;
+  --message-bg-user: #2d2d2d;
+  --message-bg-ai: #1a1a1a;
+  --message-border: #333333;
+  --input-bg: #1a1a1a;
+  --input-border: #333333;
+  --input-text: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.75);
+  --border-color: #333333;
 }
 
 @theme inline {
@@ -23,4 +32,98 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Custom scrollbar for dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333333;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #404040;
+}
+
+/* Override Bootstrap form controls for dark theme */
+.form-control {
+  background-color: var(--input-bg) !important;
+  border-color: var(--input-border) !important;
+  color: var(--input-text) !important;
+}
+
+.form-control:focus {
+  background-color: var(--input-bg) !important;
+  border-color: var(--message-bg-user) !important;
+  color: var(--input-text) !important;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
+}
+
+.form-control::placeholder {
+  color: var(--text-muted) !important;
+}
+
+/* Override Bootstrap text colors */
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+.text-white {
+  color: var(--foreground) !important;
+}
+
+/* Override Bootstrap borders */
+.border-secondary {
+  border-color: var(--border-color) !important;
+}
+
+/* Override Bootstrap list group */
+.list-group-item {
+  background-color: var(--chat-bg) !important;
+  border-color: var(--border-color) !important;
+  color: var(--foreground) !important;
+}
+
+.list-group-item.active {
+  background-color: var(--message-bg-user) !important;
+  border-color: var(--message-bg-user) !important;
+  color: var(--foreground) !important;
+}
+
+/* Override Bootstrap buttons */
+.btn-link {
+  color: var(--foreground) !important;
+}
+
+.btn-link:hover {
+  color: var(--foreground) !important;
+  opacity: 0.8;
+}
+
+/* Override Bootstrap card */
+.card {
+  background-color: var(--chat-bg) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Override Bootstrap modal */
+.modal-content {
+  background-color: var(--chat-bg) !important;
+  border-color: var(--border-color) !important;
+  color: var(--foreground) !important;
+}
+
+.modal-header {
+  border-bottom-color: var(--border-color) !important;
+}
+
+.modal-footer {
+  border-top-color: var(--border-color) !important;
 }

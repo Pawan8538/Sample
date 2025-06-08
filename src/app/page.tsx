@@ -120,6 +120,7 @@ export default function Home() {
           archived: false,
           last_active: new Date().toISOString()
         }
+        // @ts-ignore
         setCurrentConversation(newConversation)
       }
 

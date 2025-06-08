@@ -57,6 +57,7 @@ export default function Home() {
   useEffect(() => {
     if (conversationMessages && currentConversation) {
       const newMessages = transformMessages(conversationMessages)
+      // @ts-ignore
       setMessages(newMessages)
     } else if (!currentConversation) {
       setMessages([])

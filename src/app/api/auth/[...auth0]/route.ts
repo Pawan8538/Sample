@@ -7,7 +7,7 @@ export const GET = handleAuth({
     try {
       // @ts-ignore
       const session = await handleCallback(req, res)
-
+      // @ts-ignore
       const user = session?.user
 
       if (user?.sub) {

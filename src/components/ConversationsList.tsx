@@ -116,6 +116,7 @@ export default function ConversationsList({
   const handleConversationSelect = (conversation: ConversationWithMessages) => {
     if (conversation.archived) {
       if (window.confirm('This conversation is archived. Would you like to unarchive it?')) {
+        // @ts-ignore
         archiveConversation.mutate({ id: conversation.id, archived: false })
       }
       return

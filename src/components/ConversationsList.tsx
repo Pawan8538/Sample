@@ -267,7 +267,8 @@ export default function ConversationsList({
                 // @ts-ignore
                 ${(conversation as any).archived ? 'opacity-60' : ''}
                 `}
-              onClick={() => handleConversationSelect(conversation)}
+                // @ts-ignore 
+                onClick={() => handleConversationSelect(conversation)}
             >
               <div className="conversation-item d-flex align-items-center justify-content-between p-2 rounded mb-2">
                 <div 

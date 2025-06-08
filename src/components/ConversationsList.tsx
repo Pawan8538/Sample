@@ -286,6 +286,7 @@ export default function ConversationsList({
                         className="btn btn-link btn-sm p-0 text-light"
                         onClick={(e) => {
                           e.stopPropagation()
+                          // @ts-ignore
                           handleShowActions(conversation, e)
                         }}
                       >

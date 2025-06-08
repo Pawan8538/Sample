@@ -264,7 +264,7 @@ export default function ConversationsList({
                   : 'hover:bg-white/10'
                 }
                 @ts-ignore
-                ${conversation.archived ? 'opacity-60' : ''}`}
+                ${(conversation as any).archived ? 'opacity-60' : ''}
               onClick={() => handleConversationSelect(conversation)}
             >
               <div className="conversation-item d-flex align-items-center justify-content-between p-2 rounded mb-2">

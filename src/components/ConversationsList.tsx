@@ -35,7 +35,7 @@ export default function ConversationsList({
   const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null)
   const [showActions, setShowActions] = useState(false)
   const [actionPosition, setActionPosition] = useState({ x: 0, y: 0 })
-
+  // @ts-ignore
   const { data: conversations, isLoading } = trpc.chat.getAll.useQuery<ConversationWithMessages[]>(undefined, {
     refetchInterval: 5000, // Refetch every 5 seconds for real-time updates
   })

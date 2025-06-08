@@ -307,6 +307,7 @@ export default function ConversationsList({
                   style={{ minWidth: '200px' }}
                 >
                   <ConversationActions
+                    // @ts-ignore
                     conversation={conversation}
                     onClose={handleCloseActions}
                   />

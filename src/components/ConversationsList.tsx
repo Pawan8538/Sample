@@ -160,6 +160,7 @@ export default function ConversationsList({
   }
 
   return (
+    <>
     <div className="flex flex-col h-full bg-black/80 text-white" style={{ height: '100vh', overflow: 'hidden' }}>
       {/* Header with New Chat Button and Search */}
       <div className="p-3 border-bottom border-secondary" style={{
@@ -319,4 +320,5 @@ export default function ConversationsList({
       </div>
     </div>
   )
+    </> 
 } 

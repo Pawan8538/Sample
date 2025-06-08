@@ -247,7 +247,7 @@ export default function ConversationsList({
         </div>
       </div>
 
-      {/* Conversations List */}
+      
       <div className="flex-1 overflow-y-auto" style={{ 
         height: 'calc(100vh - 180px)',
         overflowY: 'auto',
@@ -263,7 +263,7 @@ export default function ConversationsList({
                   ? 'bg-white/20' 
                   : 'hover:bg-white/10'
                 }
-                // @ts-ignore
+                @ts-ignore
                 ${conversation.archived ? 'opacity-60' : ''}`}
               onClick={() => handleConversationSelect(conversation)}
             >

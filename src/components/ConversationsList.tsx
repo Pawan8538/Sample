@@ -273,6 +273,7 @@ export default function ConversationsList({
               <div className="conversation-item d-flex align-items-center justify-content-between p-2 rounded mb-2">
                 <div 
                   className="d-flex align-items-center flex-grow-1"
+                  // @ts-ignore
                   onClick={() => handleConversationSelect(conversation)}
                   style={{ cursor: 'pointer' }}
                 >

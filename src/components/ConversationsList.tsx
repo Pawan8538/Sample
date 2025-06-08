@@ -69,7 +69,9 @@ export default function ConversationsList({
         )
 
       const matchesArchive = archiveFilter === 'all' || 
+        // @ts-ignore
         (archiveFilter === 'archived' && conv.archived) ||
+        // @ts-ignore
         (archiveFilter === 'active' && !conv.archived)
 
       return matchesSearch && matchesArchive

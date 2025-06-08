@@ -6,6 +6,7 @@ import { supabaseAdmin } from '@/lib/supabase-admin'
 import { type NextRequest } from 'next/server'
 
 export const createTRPCContext = async (opts: { req: NextRequest }) => {
+  // @ts-ignore
   const session = await getSession(opts.req)
 
   return {

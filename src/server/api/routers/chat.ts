@@ -333,7 +333,7 @@ export const chatRouter = createTRPCRouter({
 
         user = newUser;
       }
-
+      // @ts-ignore
       const userId = user.id;
       let conversationId = input.conversationId;
       let history: DBMessage[] = [];

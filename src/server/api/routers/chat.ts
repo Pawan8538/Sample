@@ -302,18 +302,36 @@ export const chatRouter = createTRPCRouter({
       const { session } = ctx
       
       // Get user from database using auth0_id
-      const { data: user, error: userError } = await ctx.supabase
+      let { data: user, error: userError } = await ctx.supabase
         .from("users")
         .select("id")
         .eq("auth0_id", session.user.sub)
         .single();
 
+      // If user doesn't exist, try to create them
       if (userError || !user) {
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "User not found in database",
-          cause: userError,
-        });
+        console.log('User not found in database, attempting to create...');
+        const { data: newUser, error: createError } = await ctx.supabase
+          .from("users")
+          .insert([{
+            auth0_id: session.user.sub,
+            email: session.user.email,
+            name: session.user.name,
+            picture_url: session.user.picture,
+          }])
+          .select()
+          .single();
+
+        if (createError || !newUser) {
+          console.error('Failed to create user:', createError);
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to create user account. Please try logging out and back in.",
+            cause: createError,
+          });
+        }
+
+        user = newUser;
       }
 
       const userId = user.id;
